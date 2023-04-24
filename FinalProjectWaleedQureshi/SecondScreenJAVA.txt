@@ -1,0 +1,76 @@
+//Waleed Qureshi
+//Second Screen JAVA
+
+package com.example.finalproject;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+
+public class Main3Activity extends AppCompatActivity {
+
+    WebView webSite;
+    String newSite[] = {
+            "http://www.annistonstar.com",
+            "http://www.decaturdaily.com",
+            "http://www.dothaneagle.com",
+            "http://www.eprisenow.com",
+            "http://www.timesdaily.com",
+            "http://www.montgomeryadvertiser.com",
+            "http://www.tuscaloosanews.com",
+            "http://www.adn.com",
+            "http://www.newsminer.com/",
+            "http://www.juneauempire.com",
+            "http://www.trivalleycentral.com",
+            "http://www.hotsr.com",
+            "http://www.auburnjournal.com",
+            "http://thedailynewsonline.com",
+            "http://www.buffalonews.com",
+            "http://www.newsday.com",
+            "http://www.amny.com",
+            "http://www.nydailynews.com",
+            "http://www.metro.us/newyork",
+            "http://www.nypost.com",
+            "http://www.canada.com/calgary/calgaryherald/index.html",
+            "http://www2.canoe.com/jdem/abonnement/",
+            "http://www.jeune-independant.net",
+            "http://www.diariandorra.ad",
+            "http://www.kleinezeitung.at",
+            "http://www.kurier.at",
+            "http://www.duma.bg",
+            "http://www.clarin.com/",
+            "http://www.jcnet.com.br",
+            "http://www.hojeemdia.com.br",
+            "http://www.correioweb.com.br",
+            "http://extra.globo.com",
+            "http://www.bordermail.com.au",
+            "http://www.couriermail.com.au/",
+            "http://chinadaily.com.cn",
+            "http://www.people.com.cn/",
+            "http://www.prahaar.in",
+            "http://www.shahrara.com",
+            "http://www.hamshahrionline.ir",
+    };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main3);
+
+        webSite = (WebView) findViewById(R.id.webadd);
+
+        Intent getVar =getIntent();
+        int i = getVar.getExtras().getInt("iSend");
+
+        webSite.setWebViewClient(new WebViewClient());
+        WebSettings webSettings = webSite.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+
+        webSite.loadUrl(newSite[i]);
+    }
+}

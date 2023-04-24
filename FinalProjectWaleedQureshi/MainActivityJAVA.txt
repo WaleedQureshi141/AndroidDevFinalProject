@@ -1,0 +1,1768 @@
+//Waleed Qureshi
+//Main Activity Java
+
+//Sir I Have A Feeling That I Could Have Made This With Lesser Lines But I Was Learning While Making This Project So I Did Not Do Anything
+//That May Need Me To Remove Any Of The Work I Did Earlier.
+//Also Sir, I Really Enjoyed The Challenging Aspect Of This Project. Thank You For Teaching Me.
+
+package com.example.finalproject;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity
+{
+
+    //Declaring Objects
+    Spinner reg, coun,  sta, cit, news;
+    Button btn;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        //Defining Objects
+        reg = (Spinner) findViewById(R.id.region);
+        coun = (Spinner) findViewById(R.id.country);
+        sta = (Spinner) findViewById(R.id.state);
+        cit = (Spinner) findViewById(R.id.city);
+        news = (Spinner) findViewById(R.id.title);
+        btn = (Button) findViewById(R.id.search);
+
+        //Region Array
+        final String regArr[] = {"North America", "Africa", "Europe", "South America", "Oceania", "Asia", "Middle East"};
+
+        //Countries Array Depending On Region
+        final String NAArr[] = {"USA", "Canada"};
+        final String AfArr[] = {"Algeria"};
+        final String EuArr[] = {"Andorra", "Austria", "Bulgaria"};
+        final String SAArr[] = {"Argentina", "Brazil"};
+        final String OcArr[] = {"Australia"};
+        final String AsArr[] = {"China", "India"};
+        final String MEArr[] = {"Iran"};
+
+        //States Array Depending On Country
+        //USA
+        final String USArr[] = {"Alabama, AL", "Alaska, AK", "Arizona, AZ", "Arkansas, AR", "California, CA", "New York, NY"};
+        //Brazil
+        final String BrArr[] = {"Sao Paulo, SP", "Belo Horizonte, BH", "Federal District, FD", "Rio De Jeneiro, RJ"};
+        //Countries With No States
+        final String staOthArr[] = {"No States"};
+
+        //Cities Array Depending On State Or Country
+        //USA
+        final String USALArr[] = {"Anniston", "Decature", "Dothan", "Enterprise", "Florence", "Montgomery", "Tuscaloosa"};
+        final String USAKArr[] = {"Anchorage", "Fairbanks", "Juneau"};
+        final String USAZArr[] = {"Casa Grande"};
+        final String USARArr[] = {"Hot Springs"};
+        final String USCAArr[] = {"Auburn"};
+        final String USNYArr[] = {"Batavia", "Buffalo", "Long Island", "New York"};
+        //Canada
+        final String CanArr[] = {"Calgary", "Montreal"};
+        //Africa
+        final String AlgArr[] = {"Algiers"};
+        //Europe
+        final String AndArr[] = {"Andorra La Vella"};
+        final String AustriaArr[] = {"Graz", "Vienna"};
+        final String BulArr[] = {"Sofia"};
+        //South America
+        final String ArgArr[] = {"Buenos Aires"};
+        //States In Brazil
+        final String SPArr[] = {"Bauru"};
+        final String BHArr[] = {"Belo Horizonte"};
+        final String FDArr[] = {"Brasilia"};
+        final String RJArr[] = {"Rio De Jeneiro"};
+        //Oceania
+        final String AusArr[] = {"Aulbury-Wodonga", "Brisbane"};
+        //Asia
+        final String CHArr[] = {"Beijing"};
+        final String IndArr[] = {"Sindhuburg"};
+        //Middle East
+        final String IrArr[] = {"Mashhad", "Tehran"};
+
+        //Newspaper Title Depending On City
+        final String C1Arr[] = {"The Aniston Star"};
+        final String C2Arr[] = {"The Decature Daily"};
+        final String C3Arr[] = {"Dothan Eagle"};
+        final String C4Arr[] = {"The Enterprise Ledger"};
+        final String C5Arr[] = {"Times Daily"};
+        final String C6Arr[] = {"Montgomery Advertiser"};
+        final String C7Arr[] = {"The Tuscaloosa News"};
+        final String C8Arr[] = {"Anchorage Daily"};
+        final String C9Arr[] = {"Fairbanks Daily News-Miner"};
+        final String C10Arr[] = {"The Juneau Empire"};
+        final String C11Arr[] = {"The Dispatch"};
+        final String C12Arr[] = {"The Sentinel-Record"};
+        final String C13Arr[] = {"The Auburn Journal"};
+        final String C14Arr[] = {"The Batavia Daily News"};
+        final String C15Arr[] = {"The Buffalo News"};
+        final String C16Arr[] = {"Newsday"};
+        final String C17Arr[] = {"AM", "Daily News", "Metro-New York Edition", "The New York Post"};
+        final String C18Arr[] = {"Calgary Herald"};
+        final String C19Arr[] = {"Le Journal De Montreal"};
+        final String C20Arr[] = {"Le Jeune Ind"};
+        final String C21Arr[] = {"Diari D'Andorra"};
+        final String C22Arr[] = {"Klein Zeitung"};
+        final String C23Arr[] = {"Kurier"};
+        final String C24Arr[] = {"Duma"};
+        final String C25Arr[] = {"Clarin"};
+        final String C26Arr[] = {"Journal Da Cidade"};
+        final String C27Arr[] = {"Hoje Em Dia"};
+        final String C28Arr[] = {"Correio"};
+        final String C29Arr[] = {"Extra"};
+        final String C30Arr[] = {"The Border Mail"};
+        final String C31Arr[] = {"The Courier-Mail"};
+        final String C32Arr[] = {"China Daily", "Peoples Daily"};
+        final String C33Arr[] = {"Prahaar-Sindhuburg"};
+        final String C34Arr[] = {"Shahrara"};
+        final String C35Arr[] = {"Hamshahri Newspaper"};
+
+
+        //Assigning Region Array To Spinner
+        ArrayAdapter<String> adaptor = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, regArr);
+        reg.setAdapter(adaptor);
+
+        //Creating Response From First Spinner
+        reg.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                String selReg = regArr[position];
+
+                    //Condition To Change Country Depending On Region Selected
+                if (position == 0)
+                {
+                    ArrayAdapter<String> adaptor1 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, NAArr);
+                    coun.setAdapter(adaptor1);
+                    //Opening The State Spinner
+                    coun.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                        {
+                            String selCoun = NAArr[position];
+                            if (position == 0)
+                            {
+                                ArrayAdapter<String> adaptor2 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, USArr);
+                                sta.setAdapter(adaptor2);
+                                sta.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                    {
+                                        String selSta = USArr[position];
+                                        if (position == 0)
+                                        {
+                                            ArrayAdapter<String> adaptor3 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, USALArr);
+                                            cit.setAdapter(adaptor3);
+                                            cit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                @Override
+                                                public void onItemSelected(AdapterView<?> parent, View view, final int position, long id)
+                                                {
+                                                    String selCit = USALArr[position];
+                                                    if (position == 0)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C1Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 0;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                    else if (position == 1)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C2Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 1;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                    else if (position == 2)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C3Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 2;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                    else if (position == 3)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C4Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 3;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                    else if (position == 4)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C5Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 4;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                    else if (position == 5)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C6Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 5;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                    else if (position == 6)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C7Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 6;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                                }
+                                            });
+                                        }
+                                        else if (position == 1)
+                                        {
+                                            ArrayAdapter<String> adaptor3 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, USAKArr);
+                                            cit.setAdapter(adaptor3);
+                                            cit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                @Override
+                                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                {
+                                                    String selCit = USAKArr[position];
+                                                    if (position == 0)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C8Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 7;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                    else if (position == 1)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C9Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 8;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                    else if (position == 2)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C10Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 9;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                                }
+                                            });
+                                        }
+                                        else if (position == 2)
+                                        {
+                                            ArrayAdapter<String> adaptor3 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, USAZArr);
+                                            cit.setAdapter(adaptor3);
+                                            cit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                @Override
+                                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                {
+                                                    String selCit = USAZArr[position];
+                                                    if (position == 0)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C11Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 10;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                                }
+                                            });
+                                        }
+                                        else if (position == 3)
+                                        {
+                                            ArrayAdapter<String> adaptor3 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, USARArr);
+                                            cit.setAdapter(adaptor3);
+                                            cit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                @Override
+                                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                {
+                                                    String selCit = USARArr[position];
+                                                    if (position == 0)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C12Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 11;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                                }
+                                            });
+                                        }
+                                        else if (position == 4)
+                                        {
+                                            ArrayAdapter<String> adaptor3 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, USCAArr);
+                                            cit.setAdapter(adaptor3);
+                                            cit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                @Override
+                                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                                    String selCit = USCAArr[position];
+                                                    if (position == 0)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C13Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 12;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                                }
+                                            });
+                                        }
+                                        else if (position == 5)
+                                        {
+                                            ArrayAdapter<String> adaptor3 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, USNYArr);
+                                            cit.setAdapter(adaptor3);
+                                            cit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                @Override
+                                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                                    String selCit = USNYArr[position];
+                                                    if (position == 0)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C14Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 13;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                    else if (position == 1)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C15Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 14;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                    else if (position == 2)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C16Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 15;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                    else if (position == 3)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C17Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                String selNews = C17Arr[position];
+                                                                if (position == 0)
+                                                                {
+                                                                    final int indexSel = 16;
+                                                                    btn.setOnClickListener(new View.OnClickListener() {
+                                                                        @Override
+                                                                        public void onClick(View v)
+                                                                        {
+                                                                            Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                            gotoScreen2.putExtra("iSend", indexSel);
+                                                                            startActivity(gotoScreen2);
+                                                                        }
+                                                                    });
+                                                                }
+                                                                else if (position == 1)
+                                                                {
+                                                                    final int indexSel = 17;
+                                                                    btn.setOnClickListener(new View.OnClickListener() {
+                                                                        @Override
+                                                                        public void onClick(View v)
+                                                                        {
+                                                                            Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                            gotoScreen2.putExtra("iSend", indexSel);
+                                                                            startActivity(gotoScreen2);
+                                                                        }
+                                                                    });
+                                                                }
+                                                                else if (position == 2)
+                                                                {
+                                                                    final int indexSel = 18;
+                                                                    btn.setOnClickListener(new View.OnClickListener() {
+                                                                        @Override
+                                                                        public void onClick(View v)
+                                                                        {
+                                                                            Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                            gotoScreen2.putExtra("iSend", indexSel);
+                                                                            startActivity(gotoScreen2);
+                                                                        }
+                                                                    });
+                                                                }
+                                                                else if (position == 3)
+                                                                {
+                                                                    final int indexSel = 19;
+                                                                    btn.setOnClickListener(new View.OnClickListener() {
+                                                                        @Override
+                                                                        public void onClick(View v)
+                                                                        {
+                                                                            Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                            gotoScreen2.putExtra("iSend", indexSel);
+                                                                            startActivity(gotoScreen2);
+                                                                        }
+                                                                    });
+                                                                }
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                                }
+                                            });
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> parent) {
+
+                                    }
+                                });
+                            }
+                            else if (position == 1)
+                            {
+                                ArrayAdapter<String> adaptor2 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, staOthArr);
+                                sta.setAdapter(adaptor2);
+                                sta.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                    {
+                                        String selSta = staOthArr[position];
+                                        if (position == 0)
+                                        {
+                                            ArrayAdapter<String> adaptor3 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, CanArr);
+                                            cit.setAdapter(adaptor3);
+                                            cit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                @Override
+                                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                {
+                                                    String selCit = CanArr[position];
+                                                    if (position == 0)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C18Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 20;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                    else if (position == 1)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C19Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 21;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                                }
+                                            });
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> parent) {
+
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+                }
+                else if (position == 1)
+                {
+                    ArrayAdapter<String> adaptor1 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, AfArr);
+                    coun.setAdapter(adaptor1);
+                    coun.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                        {
+                            String selCoun = AfArr[position];
+                            if (position == 0)
+                            {
+                                ArrayAdapter<String> adaptor2 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, staOthArr);
+                                sta.setAdapter(adaptor2);
+                                sta.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                    {
+                                        String selSta = staOthArr[position];
+                                        if (position == 0)
+                                        {
+                                            ArrayAdapter<String> adaptor3 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, AlgArr);
+                                            cit.setAdapter(adaptor3);
+                                            cit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                @Override
+                                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                {
+                                                    String selCit = AlgArr[position];
+                                                    if (position == 0)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C20Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 22;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                                }
+                                            });
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> parent) {
+
+                                    }
+                                });
+                            }
+
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+                }
+                else if (position == 2)
+                {
+                    ArrayAdapter<String> adaptor1 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, EuArr);
+                    coun.setAdapter(adaptor1);
+                    coun.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                        {
+                            String selCoun = EuArr[position];
+                            if (position == 0)
+                            {
+                                ArrayAdapter<String> adaptor2 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, staOthArr);
+                                sta.setAdapter(adaptor2);
+                                sta.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                    {
+                                        String selSta = staOthArr[position];
+                                        if (position == 0)
+                                        {
+                                            ArrayAdapter<String> adaptor3 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, AndArr);
+                                            cit.setAdapter(adaptor3);
+                                            cit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                @Override
+                                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                {
+                                                    String selCit = AndArr[position];
+                                                    if (position == 0)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C21Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 23;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                                }
+                                            });
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> parent) {
+
+                                    }
+                                });
+                            }
+                            else if (position == 1)
+                            {
+                                ArrayAdapter<String> adaptor2 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, staOthArr);
+                                sta.setAdapter(adaptor2);
+                                sta.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                    {
+                                        String selSta = staOthArr[position];
+                                        if (position == 0)
+                                        {
+                                            ArrayAdapter<String> adaptor3 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, AustriaArr);
+                                            cit.setAdapter(adaptor3);
+                                            cit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                @Override
+                                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                {
+                                                    String selCit = AustriaArr[position];
+                                                    if (position == 0)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C22Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 24;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                    else if (position == 1)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C23Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 25;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                                }
+                                            });
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> parent) {
+
+                                    }
+                                });
+                            }
+                            else if (position == 2)
+                            {
+                                ArrayAdapter<String> adaptor2 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, staOthArr);
+                                sta.setAdapter(adaptor2);
+                                sta.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                    {
+                                        String selSta = staOthArr[position];
+                                        if (position == 0)
+                                        {
+                                            ArrayAdapter<String> adaptor3 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, BulArr);
+                                            cit.setAdapter(adaptor3);
+                                            cit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                @Override
+                                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                {
+                                                    ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C24Arr);
+                                                    news.setAdapter(adaptor4);
+                                                    news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                        @Override
+                                                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                        {
+                                                            final int indexSel = 26;
+                                                            btn.setOnClickListener(new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(View v)
+                                                                {
+                                                                    Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                    gotoScreen2.putExtra("iSend", indexSel);
+                                                                    startActivity(gotoScreen2);
+                                                                }
+                                                            });
+                                                        }
+
+                                                        @Override
+                                                        public void onNothingSelected(AdapterView<?> parent) {
+
+                                                        }
+                                                    });
+                                                }
+
+                                                @Override
+                                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                                }
+                                            });
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> parent) {
+
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+                }
+                else if (position == 3)
+                {
+                    ArrayAdapter<String> adaptor1 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, SAArr);
+                    coun.setAdapter(adaptor1);
+                    coun.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                        {
+                            String selCoun = SAArr[position];
+                            if (position == 0)
+                            {
+                                ArrayAdapter<String> adaptor2 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, staOthArr);
+                                sta.setAdapter(adaptor2);
+                                sta.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                    {
+                                        String selSta = staOthArr[position];
+                                        if (position == 0)
+                                        {
+                                            ArrayAdapter<String> adaptor3 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, ArgArr);
+                                            cit.setAdapter(adaptor3);
+                                            cit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                @Override
+                                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                {
+                                                    ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C25Arr);
+                                                    news.setAdapter(adaptor4);
+                                                    news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                        @Override
+                                                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                        {
+                                                            final int indexSel = 27;
+                                                            btn.setOnClickListener(new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(View v)
+                                                                {
+                                                                    Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                    gotoScreen2.putExtra("iSend", indexSel);
+                                                                    startActivity(gotoScreen2);
+                                                                }
+                                                            });
+                                                        }
+
+                                                        @Override
+                                                        public void onNothingSelected(AdapterView<?> parent) {
+
+                                                        }
+                                                    });
+                                                }
+
+                                                @Override
+                                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                                }
+                                            });
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> parent) {
+
+                                    }
+                                });
+                            }
+                            else if (position == 1)
+                            {
+                                ArrayAdapter<String> adaptor2 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, BrArr);
+                                sta.setAdapter(adaptor2);
+                                sta.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                    {
+                                        String selSta = BrArr[position];
+                                        if (position == 0)
+                                        {
+                                            ArrayAdapter<String> adaptor3 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, SPArr);
+                                            cit.setAdapter(adaptor3);
+                                            cit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                @Override
+                                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                {
+                                                    ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C26Arr);
+                                                    news.setAdapter(adaptor4);
+                                                    news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                        @Override
+                                                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                        {
+                                                            final int indexSel = 28;
+                                                            btn.setOnClickListener(new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(View v)
+                                                                {
+                                                                    Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                    gotoScreen2.putExtra("iSend", indexSel);
+                                                                    startActivity(gotoScreen2);
+                                                                }
+                                                            });
+                                                        }
+
+                                                        @Override
+                                                        public void onNothingSelected(AdapterView<?> parent) {
+
+                                                        }
+                                                    });
+                                                }
+
+                                                @Override
+                                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                                }
+                                            });
+                                        }
+                                        else if (position == 1)
+                                        {
+                                            ArrayAdapter<String> adaptor3 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, BHArr);
+                                            cit.setAdapter(adaptor3);
+                                            cit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                @Override
+                                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                {
+                                                    ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C27Arr);
+                                                    news.setAdapter(adaptor4);
+                                                    news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                        @Override
+                                                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                        {
+                                                            final int indexSel = 29;
+                                                            btn.setOnClickListener(new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(View v)
+                                                                {
+                                                                    Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                    gotoScreen2.putExtra("iSend", indexSel);
+                                                                    startActivity(gotoScreen2);
+                                                                }
+                                                            });
+                                                        }
+
+                                                        @Override
+                                                        public void onNothingSelected(AdapterView<?> parent) {
+
+                                                        }
+                                                    });
+                                                }
+
+                                                @Override
+                                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                                }
+                                            });
+                                        }
+                                        else if (position == 2)
+                                        {
+                                            ArrayAdapter<String> adaptor3 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, FDArr);
+                                            cit.setAdapter(adaptor3);
+                                            cit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                @Override
+                                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                {
+                                                    ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C28Arr);
+                                                    news.setAdapter(adaptor4);
+                                                    news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                        @Override
+                                                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                        {
+                                                            final int indexSel = 30;
+                                                            btn.setOnClickListener(new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(View v)
+                                                                {
+                                                                    Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                    gotoScreen2.putExtra("iSend", indexSel);
+                                                                    startActivity(gotoScreen2);
+                                                                }
+                                                            });
+                                                        }
+
+                                                        @Override
+                                                        public void onNothingSelected(AdapterView<?> parent) {
+
+                                                        }
+                                                    });
+                                                }
+
+                                                @Override
+                                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                                }
+                                            });
+                                        }
+                                        else if (position == 3)
+                                        {
+                                            ArrayAdapter<String> adaptor3 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, RJArr);
+                                            cit.setAdapter(adaptor3);
+                                            cit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                @Override
+                                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                {
+                                                    ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C29Arr);
+                                                    news.setAdapter(adaptor4);
+                                                    news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                        @Override
+                                                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                        {
+                                                            final int indexSel = 31;
+                                                            btn.setOnClickListener(new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(View v)
+                                                                {
+                                                                    Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                    gotoScreen2.putExtra("iSend", indexSel);
+                                                                    startActivity(gotoScreen2);
+                                                                }
+                                                            });
+                                                        }
+
+                                                        @Override
+                                                        public void onNothingSelected(AdapterView<?> parent) {
+
+                                                        }
+                                                    });
+                                                }
+
+                                                @Override
+                                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                                }
+                                            });
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> parent) {
+
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+                }
+                else if (position == 4)
+                {
+                    ArrayAdapter<String> adaptor1 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, OcArr);
+                    coun.setAdapter(adaptor1);
+                    coun.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                        {
+                            String selCoun = OcArr[position];
+                            if (position == 0)
+                            {
+                                ArrayAdapter<String> adaptor2 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, staOthArr);
+                                sta.setAdapter(adaptor2);
+                                sta.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                    {
+                                        String selSta = staOthArr[position];
+                                        if (position == 0)
+                                        {
+                                            ArrayAdapter<String> adaptor3 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, AusArr);
+                                            cit.setAdapter(adaptor3);
+                                            cit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                @Override
+                                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                {
+                                                    String selCit = AusArr[position];
+                                                    if (position == 0)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C30Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 32;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                    else if (position == 1)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C31Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 33;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                                }
+                                            });
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> parent) {
+
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+                }
+                else if (position == 5)
+                {
+                    ArrayAdapter<String> adaptor1 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, AsArr);
+                    coun.setAdapter(adaptor1);
+                    coun.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                        {
+                            String selCoun = AsArr[position];
+                            if (position == 0)
+                            {
+                                ArrayAdapter<String> adaptor2 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, staOthArr);
+                                sta.setAdapter(adaptor2);
+                                sta.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                    {
+                                        String selSta = staOthArr[position];
+                                        if (position == 0)
+                                        {
+                                            ArrayAdapter<String> adaptor3 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, CHArr);
+                                            cit.setAdapter(adaptor3);
+                                            cit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                @Override
+                                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                {
+                                                    String selCit = CHArr[position];
+                                                    if (position == 0)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C32Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                String selNews = C32Arr[position];
+                                                                if (position == 0)
+                                                                {
+                                                                    final int indexSel = 34;
+                                                                    btn.setOnClickListener(new View.OnClickListener() {
+                                                                        @Override
+                                                                        public void onClick(View v)
+                                                                        {
+                                                                            Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                            gotoScreen2.putExtra("iSend", indexSel);
+                                                                            startActivity(gotoScreen2);
+                                                                        }
+                                                                    });
+                                                                }
+                                                                else if (position == 1)
+                                                                {
+                                                                    final int indexSel = 35;
+                                                                    btn.setOnClickListener(new View.OnClickListener() {
+                                                                        @Override
+                                                                        public void onClick(View v)
+                                                                        {
+                                                                            Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                            gotoScreen2.putExtra("iSend", indexSel);
+                                                                            startActivity(gotoScreen2);
+                                                                        }
+                                                                    });
+                                                                }
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                                }
+                                            });
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> parent) {
+
+                                    }
+                                });
+                            }
+                            if (position == 1)
+                            {
+                                ArrayAdapter<String> adaptor2 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, staOthArr);
+                                sta.setAdapter(adaptor2);
+                                sta.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                    {
+                                        String selSta = staOthArr[position];
+                                        if (position == 0)
+                                        {
+                                            ArrayAdapter<String> adaptor3 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, IndArr);
+                                            cit.setAdapter(adaptor3);
+                                            cit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                @Override
+                                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                {
+                                                    String selCit = IndArr[position];
+                                                    if (position == 0)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C33Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 36;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                                }
+                                            });
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> parent) {
+
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+                }
+                else if (position == 6)
+                {
+                    ArrayAdapter<String> adaptor1 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, MEArr);
+                    coun.setAdapter(adaptor1);
+                    coun.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                        {
+                            String selCoun = AsArr[position];
+                            if (position == 0)
+                            {
+                                ArrayAdapter<String> adaptor2 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, staOthArr);
+                                sta.setAdapter(adaptor2);
+                                sta.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                    {
+                                        String selSta = staOthArr[position];
+                                        if (position == 0)
+                                        {
+                                            ArrayAdapter<String> adaptor3 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, IrArr);
+                                            cit.setAdapter(adaptor3);
+                                            cit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                @Override
+                                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                {
+                                                    String selCit = IrArr[position];
+                                                    if (position == 0)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C34Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 37;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                    else if (position == 1)
+                                                    {
+                                                        ArrayAdapter<String> adaptor4 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, C35Arr);
+                                                        news.setAdapter(adaptor4);
+                                                        news.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                            @Override
+                                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                                                            {
+                                                                final int indexSel = 38;
+                                                                btn.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v)
+                                                                    {
+                                                                        Intent gotoScreen2 = new Intent(MainActivity.this, Main3Activity.class);
+                                                                        gotoScreen2.putExtra("iSend", indexSel);
+                                                                        startActivity(gotoScreen2);
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                                }
+                                            });
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> parent) {
+
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+    }
+}
+
